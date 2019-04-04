@@ -6,6 +6,23 @@ Author: Shogo Konishi <shkonishi@gmail.com>
 Maintainer: Shogo Konishi <shkonishi@gmail.com>
 Description: This is my personal package of R functions for Bioinformatics
     Use four spaces when indenting paragraphs within the Description.
+Imports:
+    amap, 
+    dendextend,
+    dplyr,
+    dynamicTreeCut,
+    ggplot2,
+    ggrepel,
+    gplots,
+    gridExtra,
+    magrittr,
+    pathview,
+    plyr,
+    RColorBrewer,
+    RISmed,
+    stringi,
+    tibble,
+    tidyr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
