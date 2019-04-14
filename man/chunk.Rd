@@ -7,21 +7,21 @@
 chunk(x, n, r)
 }
 \arguments{
-\item{x}{a vector.}
+\item{x}{atomic:}
 
-\item{n}{an integer. the length of each chunk elements}
+\item{n}{integer: the length of each chunk elements}
 
-\item{r}{a logical. All of the chunks except for the last remainder are exactly 'n'.
-The default value is FALSE}
+\item{r}{logical: All of the chunks except for the last remainder are exactly 'n'.
+The default value is FALSE.}
 }
 \description{
 Create chunk list from vector.
 }
 \examples{
-set.seed(1)
 v1 <- c(1, 1, 2, NA, 3, 3, 4, 4, NA )
 v2 <- factor(v1)
 chunk(v1, 4)
 chunk(v1, 4, TRUE)
 chunk(v2, 4)
+
 }

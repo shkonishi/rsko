@@ -1,6 +1,6 @@
 #' My utility functions for handling ggplot objects.
-#' @name ggutils
-#' @rdname ggutils
+#' @name gg_utls
+#' @rdname gg_utls
 #'
 #' @title My utility functions for handling ggplot objects.
 #'
@@ -8,10 +8,13 @@
 #' @usage unfacet(x)
 #' @usage splitFacet(x)
 #'
-#' @param x ggplot object
+#' @usage gg_cols(n)
+#'
+#' @param x ggplot class object
+#' @param n integer: numbers of colour code
 #'
 #' @examples \dontrun{
-#' # gg_leg
+#' # gg_leg: separate a ggplot objetc to a legend and a ggplot object without legend.
 #' gg1 <- ggplot2::ggplot(iris, ggplot2::aes(Sepal.Length, Sepal.Width, colour = Species)) +
 #'  ggplot2::geom_point()
 #' gg2 <- ggplot2::ggplot(iris, ggplot2::aes(Sepal.Length, Petal.Length, colour = Species)) +
@@ -24,16 +27,20 @@
 #' gridExtra::grid.arrange(gridExtra::arrangeGrob(gg1_nl, gg2_nl, lgnd,
 #'  ncol = 3, widths = c(3/7, 3/7, 1/7)))
 #'
-#' # splitFacet
+#' # splitFacet: split a facet to list
 #' gg <- ggplot2::ggplot(iris, ggplot2::aes(Sepal.Length, Petal.Length)) +
 #'  ggplot2::geom_point() +
 #'  ggplot2::facet_wrap(~Species)
 #' lst <- splitFacet(gg)
 #' do.call(gridExtra::grid.arrange, c(lst, list(ncol = 3)))
 #'
+#' # gg_cols: Create defaoult colour code of ggplot2
+#' cols <- gg_cols(10)
+#' barplot(setNames(rep(1,10), cols), col = cols, las =2)
+#'
 #' }
 #'
-#' @rdname ggutils
+#' @rdname gg_utls
 #' @export
 gg_leg <- function(x) {
   # argument check: x
@@ -51,14 +58,14 @@ gg_leg <- function(x) {
   res
 }
 
-#' @rdname ggutils
+#' @rdname gg_utls
 #' @export
 unfacet <- function(x){
   x$facet <- ggplot2::ggplot()$facet
   x
 }
 
-#' @rdname ggutils
+#' @rdname gg_utls
 #' @export
 splitFacet <- function(x){
   facet_vars <- names(x$facet$params$facets)         # 1
@@ -68,4 +75,11 @@ splitFacet <- function(x){
     x$data <- new_data
     x})
   new_plots
+}
+
+#' @rdname gg_utls
+#' @export
+gg_cols <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  grDevices::hcl(h = hues, l = 65, c = 100)[1:n]
 }

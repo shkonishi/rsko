@@ -12,12 +12,13 @@
 #'
 #' ## A list have different length of splitted elements
 #' x <- c("xxx;yyy", "xyx", "xxy;yyx;xxz")
-#' splt_dat(x, ";")
+#' res <- splt_dat(x, ";")
+#'
 #'
 #' ## A Named lists have different lengths for split elements.
 #' equas <- rskodat::react_equas_ko
 #' x <- equas$KOids[1:10] %>% setNames(., equas$Rid[1:10])
-#' splt_dat(x, ";")
+#' res <- splt_dat(x, ";")
 #' split(res, res$ind)
 #' }
 #' @export

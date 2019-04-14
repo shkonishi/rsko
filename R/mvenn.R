@@ -1,17 +1,19 @@
-#' Multiple venn
-#' @description Multiple venn, between all combinations of two list elements. If only one list,
-#' all combinations in the list elements.
+#' Multiple venn diagram, between all combinations of two list elements.
+#' @description Multiple venn diagram, between all combinations of two list elements. If only one list,
+#' all combinations in the list elements, using the function gplots::venn.
 #' @usage mvenn(x, y, show.plt, ...)
 #' @param x list
 #' @param y list [default = NULL]
 #' @param show.plt logical: draw plot or not. [default=F]
 #' @param ... other gplots::venn options
-#' @examples \dontrun{ # sample data
+#' @examples \dontrun{
+#' # sample data
 #' set.seed(1)
 #' n <- 3; n_1 <- c(5,6,4); n_2 <- c(4,6,4)
 #' v1 <- setNames(lapply(1:n, function(i){
 #'  sample(LETTERS[1:10], n_1[i])
 #' }), paste0("e",as.character(1:n)) )
+#'
 #' v2 <- setNames(lapply(1:n, function(i){
 #'  sample(LETTERS[1:10], n_2[i])
 #' }) , paste0("f",as.character(1:n)))
@@ -42,9 +44,15 @@ mvenn <- function(x, y = NULL, show.plt = F, ...){
 
   }
 
-  res_venn <- lapply(idx, function(v){
-    gplots::venn(list(x[[v[1]]], y[[v[2]]]), show.plot = show.plt)
-  })
+  if (!is.null(y)) {
+    res_venn <- lapply(idx, function(v){
+      gplots::venn(list(x[[v[1]]], y[[v[2]]]), show.plot = show.plt)
+    })
+  } else {
+    res_venn <- lapply(idx, function(v){
+      gplots::venn(list(x[[v[1]]], x[[v[2]]]), show.plot = show.plt)
+    })
+  }
 
 
   dif_A <- NULL; dif_B <- NULL

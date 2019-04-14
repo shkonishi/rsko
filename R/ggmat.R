@@ -55,14 +55,14 @@
 ggmat <- function(dat, column = 1:ncol(dat), xfctr, lwd = 1, mcols = NULL, col_fctr = NULL, vselect = NULL, vcol = NULL,
                   xlab = NULL, ylab = NULL, main = NULL) {
 
-  # argument check: dat ----
+  # argument check: dat
   if (!is.data.frame(dat)) stop("'dat' must be data.frame.")
 
-  # argument check: xfctr ----
+  # argument check: xfctr
   if (nrow(dat) != length(xfctr))
     stop("The length of 'xfctr' must be same as nrow of 'dat'. ")
 
-  # select column from 'dat' ----
+  # select column from 'dat'
   dat <- dat[column]
 
   # defined global variant ----
@@ -70,9 +70,9 @@ ggmat <- function(dat, column = 1:ncol(dat), xfctr, lwd = 1, mcols = NULL, col_f
   key = NULL
   value = NULL
 
-  # Create matplot object ----
+  # Create matplot object
   if (!is.null(col_fctr) & length(col_fctr) == nrow(dat)) {
-    ## coloured with 'col_fctr'----
+    ## coloured with 'col_fctr'
     if (is.null(mcols)) {
       res <- data.frame(xfctr, col_fctr, dat) %>%
         tidyr::gather(., key = "key", value = "value", -1:-2) %>%
@@ -96,8 +96,7 @@ ggmat <- function(dat, column = 1:ncol(dat), xfctr, lwd = 1, mcols = NULL, col_f
 
 
   } else if (is.null(col_fctr)) {
-    if (is.null(vselect)) {
-      ## no coloured ----
+    if (is.null(vselect)) {# no coloured
       res <- data.frame(xfctr, dat) %>%
         tidyr::gather(., key = "key", value = "value", -1) %>%
         ggplot2::ggplot(., ggplot2::aes(x = xfctr, y = value, group = key)) +
@@ -107,16 +106,14 @@ ggmat <- function(dat, column = 1:ncol(dat), xfctr, lwd = 1, mcols = NULL, col_f
 
     } else if (!is.null(vselect)) {
 
-      if (is.null(names(vselect))) {
-        ## High lighted lines with selected variable ----
+      if (is.null(names(vselect))) { # High lighted lines with selected variable
         gdat <- data.frame(xfctr, dat) %>%
           tidyr::gather(., key = "key", value = "value", -1) %>%
           dplyr::mutate(hl_fctr = ifelse(key %in% vselect, key, "")) %>%
           dplyr::mutate(hl_fctr = factor(hl_fctr, levels = c(vselect, "")))
 
-        ## High lighted colours using manual or default colours ----
-        if (!is.null(vcol) & length(vselect) == length(vcol)) {
-          ## Gives manual colours for high lighted lines by 'vcol'.----
+        ## High lighted colours using manual or default colours
+        if (!is.null(vcol) & length(vselect) == length(vcol)) {# Gives manual colours for high lighted lines by 'vcol'
           res <- gdat %>%
             ggplot2::ggplot(., ggplot2::aes(x = xfctr, y = value, colour = hl_fctr, group = key)) +
             ggplot2::geom_line(size = lwd) +
@@ -124,11 +121,10 @@ ggmat <- function(dat, column = 1:ncol(dat), xfctr, lwd = 1, mcols = NULL, col_f
             ggplot2::theme_minimal(base_size = 20) +
             ggplot2::labs(title = main, x = xlab, y = ylab, colour = "")
 
-        } else if (is.null(vcol)) {
-          ## Default colours for high lighted lines. ----
+        } else if (is.null(vcol)) { # Default colours for high lighted lines.
           gdat %>% ggplot2::ggplot(., ggplot2::aes(x = xfctr, y = value, colour = hl_fctr, group = key)) +
             ggplot2::geom_line(size = lwd) +
-            ggplot2::scale_color_manual(values = c(rsko::ggcols(length(vselect)),  "gray80")) +
+            ggplot2::scale_color_manual(values = c(rsko::gg_cols(length(vselect)),  "gray80")) +
             ggplot2::theme_minimal(base_size = 20) +
             ggplot2::labs(title = main, x = xlab,  y = ylab, colour = "")
 
@@ -141,7 +137,7 @@ ggmat <- function(dat, column = 1:ncol(dat), xfctr, lwd = 1, mcols = NULL, col_f
         ## factor for colours. ----
         gdat <- data.frame(xfctr, dat) %>%
           tidyr::gather(., key = "key", value = "value", -1) %>%
-          dplyr::mutate(hl_fctr = ifelse(key %in% vselect, key, "")) %>%
+          dplyr::mutate(hl_fctr = factor(ifelse(key %in% vselect, key, ""))) %>%
           dplyr::mutate(hl_fctr = factor(hl_fctr, levels = unique(c(names(vselect), ""))))
 
         ## High lighted colours using manual or default colours if 'vselect' was named vector, names of 'vselect' were
@@ -149,7 +145,8 @@ ggmat <- function(dat, column = 1:ncol(dat), xfctr, lwd = 1, mcols = NULL, col_f
         if (!is.null(vcol) & length(unique(names(vselect))) == length(vcol)) {
           ## Gives manual colours for high lighted lines by 'vcol'.----
           res <- gdat %>% ggplot2::ggplot(., ggplot2::aes(x = xfctr, y = value, colour = hl_fctr, group = key)) +
-            ggplot2::geom_line(size = lwd) + ggplot2::scale_color_manual(values = c(vcol, "gray80")) +
+            ggplot2::geom_line(size = lwd) +
+            ggplot2::scale_color_manual(values = c(vcol, "gray80")) +
             ggplot2::theme_minimal(base_size = 20) +
             ggplot2::labs(title = main, x = xlab, y = ylab, colour = "")
 
@@ -157,7 +154,7 @@ ggmat <- function(dat, column = 1:ncol(dat), xfctr, lwd = 1, mcols = NULL, col_f
           ## Default colours for high lighted lines. ----
           res <- gdat %>% ggplot2::ggplot(., ggplot2::aes(x = xfctr, y = value, colour = hl_fctr, group = key)) +
             ggplot2::geom_line(size = lwd) +
-            ggplot2::scale_color_manual(values = c(rsko::ggcols(length(vselect)), "gray80")) +
+            ggplot2::scale_color_manual(values = c(rsko::gg_cols(length(vselect)), "gray80")) +
             ggplot2::theme_minimal(base_size = 20) +
             ggplot2::labs(title = main, x = xlab, y = ylab, colour = "")
 

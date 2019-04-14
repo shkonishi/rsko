@@ -5,6 +5,9 @@
 \alias{ul}
 \alias{dup}
 \alias{char_sort}
+\alias{fct_char}
+\alias{str_tail}
+\alias{str_head}
 \title{My R utility functions.}
 \usage{
 ul(x)
@@ -12,22 +15,42 @@ ul(x)
 dup(x)
 
 char_sort(x)
+
+fct_char(x)
+
+str_tail(x, n)
+
+str_head(x, n)
 }
 \arguments{
 \item{x}{atomic}
+
+\item{n}{integer}
 }
 \description{
 My R utility functions.
 }
 \examples{
-# return the list of position of duplicated value.
+# unique length
 set.seed(12)
 v1 <- sample(letters[1:5], size = 5, TRUE)
-v2 <- sample(letters[1:5], size = 5, FALSE)
-v3 <- sort(paste0("V", as.character(1:13)))
 ul(v1)
+
+# return the list of position of duplicated value.
+v2 <- sample(letters[1:5], size = 5, FALSE)
 dup(v1)
 dup(v2)
+
+# Sort string vectors in numerical order
+v3 <- sort(paste0("V", as.character(1:13)))
 char_sort(v3)
+
+# create factor with levels by numerical order
+fct_char(v3)
+
+# head and tail for strings
+v4 <- sapply(1:3, function(i) paste(sample(c("A","T","G","C"), 10, TRUE), collapse = ""))
+str_head(v4, 3)
+str_tail(v4, 3)
 
 }
