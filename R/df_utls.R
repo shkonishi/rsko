@@ -5,34 +5,45 @@
 #' @name df_utls
 #' @rdname df_utls
 #'
-#' @usage td(dat, nm, fctr_dat)
+#' @usage td(dat, nm, rn, fctr_dat)
 #' @usage subd(dat, idlist, idx, mrgn)
 #'
-#' @param dat data.frame
 #'
-#' @param nm character
+#' @param dat data.frame:
+#' @param nm character: [default: NULL]
+#' @param rn logical: [default: FALSE]
 #' @param fctr_dat data.frame or vector
+#'
 #'
 #' @param idlist list: a list for extracting subset
 #' @param idx atomic: a column of index for splitting the data.frame
 #' @param mrgn integer: margin of data.frame
 #'
 #' @examples \dontrun{
+#'
+#' # Create a transposed data.frame with names
+#' td(iris[-5], nm = rownames(iris), rn = T)
+#'
 #' # Create a transposed data.frame with names and columns of factor
+#' vdat <- rsko::splt_dat(names(iris[-5]), "\\.", c("organ","where"))
+#' td(iris[-5], nm = rownames(iris), )
+#'
 #' dat <- rskodat::fpkm
-#' nm <- rownames(dat)
 #' fctr_dat <- rsko::splt_dat(names(dat), "_", c("cnd","time","rep"))
-#' tdat <- td(dat, nm, fctr_dat)
-#' tdat[1:6]
+#' tdat <- td(dat, rownames(dat), fctr_dat); tdat[1:6]
 #'
 #' # Subset with a list for index column
-#' slst <- list(toyota = c("Toyota Corolla", "Toyota Corona"),
+#' sub_idx1 <- list(toyota = c("Toyota Corolla", "Toyota Corona"),
 #'     mazda = c("Mazda RX4", "Mazda RX4 Wag"))
-#' subd(mtcars, slst, rownames(mtcars), 1)
+#' subd(mtcars, sub_idx1, rownames(mtcars), 1)
+#'
+#' sub_idx2 <- list(c("mpg", "disp"), c("vs","gear"))
+#' subd(mtcars, sub_idx2, names(mtcars), 2)
+#'
 #' }
 #' @rdname df_utls
 #' @export
-td <- function(dat, nm = NULL, fctr_dat=NULL){
+td <- function(dat, nm = NULL, rn = FALSE, fctr_dat=NULL){
   # names of 'dat' set as a column of transposed data.frame
   lab <- names(dat)
 
@@ -50,7 +61,13 @@ td <- function(dat, nm = NULL, fctr_dat=NULL){
   if (!is.null(fctr_dat)) {
     cbind(fctr_dat, tdat)
   } else {
-    cbind(lab, tdat)
+    if (rn == TRUE) {
+      rownames(tdat) <- lab
+      tdat
+    } else {
+      rownames(tdat) <- NULL
+      cbind(lab, tdat)
+    }
   }
 }
 
@@ -60,7 +77,7 @@ subd <- function(dat, idlist, idx, mrgn ){
   # argument check
   if (mrgn == 1 & nrow(dat) != length(idx)) {
     stop("the length of 'idx' and 'nrow(dat)' must be the same. ")
-  } else if (mrgn == 2 & ncol(dat) == length(idx)) {
+  } else if (mrgn == 2 & ncol(dat) != length(idx)) {
     stop("the length of 'idx' and 'ncol(dat)' must be the same. ")
   }
 

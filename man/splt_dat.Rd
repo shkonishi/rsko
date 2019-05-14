@@ -17,18 +17,24 @@ splt_dat(x, splt, lab)
 Split the character to data.frame
 }
 \examples{
-\dontrun{ # examples
+\dontrun{
+
+# examples
 x <- paste(LETTERS[1:5], letters[1:5], 1:5, sep="_")
 splt_dat(x,"_", c("x","y","z"))
 
-## A list have different length of splitted elements
-x <- c("xxx;yyy", "xyx", "xxy;yyx;xxz")
-splt_dat(x, ";")
+# A list have different length of splitted elements
+x1 <- c("xxx;yyy", "xyx", "xxy;yyx;xxz")
+x2 <- setNames(x1, letters[1:3])
+splt_dat(x1, ";")
+splt_dat(x2, ";")
+splt_dat(x2, ";", c("v","idx"))
 
-## A Named lists have different lengths for split elements.
+# A Named lists have different lengths for split elements.
 equas <- rskodat::react_equas_ko
 x <- equas$KOids[1:10] \%>\% setNames(., equas$Rid[1:10])
-splt_dat(x, ";")
-split(res, res$ind)
+res <- splt_dat(x, ";", c("Kid", "Rid"))
+split(res, res$Rid)
+
 }
 }

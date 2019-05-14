@@ -28,7 +28,7 @@
 #' @rdname kb_utls
 #' @export
 kb_utls <- function(x, kb_opt = list(format = 'html', align = 'c', row.names = F),
-                   ext_opt = list(bootstrap_options = 'striped', full_width = F, position = 'float_left')){
+                   ext_opt = list(bootstrap_options = 'striped', full_width = F, position = 'left')){
   # default options
   kb_opt_def = list(format = 'html', align = 'c', row.names = F)
   ext_opt_def = list(bootstrap_options = 'striped', full_width = F, position = 'left')

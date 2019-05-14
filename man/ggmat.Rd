@@ -4,7 +4,7 @@
 \alias{ggmat}
 \title{Matrix plot using ggplot2}
 \usage{
-ggmat(dat, column, xfctr, lwd, mcols, col_fctr, vselect, vcol, xlab, ylab, main)
+ggmat(dat, column, xfctr, lwd, mcols, col_fctr, labs, vselect, vcol, xlab, ylab, main)
 }
 \arguments{
 \item{dat}{data.frame}
@@ -18,6 +18,8 @@ ggmat(dat, column, xfctr, lwd, mcols, col_fctr, vselect, vcol, xlab, ylab, main)
 \item{mcols}{manual colour setting}
 
 \item{col_fctr}{factor for coloured groups}
+
+\item{labs}{character: text for plotting at additional area}
 
 \item{vselect}{select variable names for highlight. if it was given, 'col_fctr' must be null.
 if 'vselect' was named vector, names of 'vselect' were factor for colours.}
@@ -35,6 +37,7 @@ Matrix plot using ggplot2
 }
 \examples{
 \dontrun{
+
 # data
 dat1 <- rskodat::dat1norep
 dat2 <- dat1[1:3,]
@@ -45,12 +48,17 @@ rsko::ggmat(dat = dat1, column = -1:-4, xfctr = dat1$days, col_fctr = dat1$strai
     mcols = 1:2)
 rsko::ggmat(dat = dat2, column = -1:-4, xfctr = dat2$days)
 
-# Give variable names as vectors or named vectors for highlight lines.
+# add text
+library(dplyr)
+dat <- Orange \%>\% mutate(Tree = as.character(Tree))
+ggmat(dat, -1:-2, xfctr = dat$age, col_fctr = dat$Tree)
+ggmat(dat, -1:-2, xfctr = dat$age, col_fctr = dat$Tree, labs = dat$Tree)
+
+## Give variable names as vectors or named vectors for highlight lines.
 slct1 <- c('X10', 'X5', 'X3')
 slct2 <- setNames(slct1, c('first', 'second', 'second'))
 slct3 <- setNames(names(dat2)[-1:-4], rep(c('I','II','III'), c(2,4,4)))
-
-# vector of line colors corresponding to variable name selected.
+## vector of line colors corresponding to variable name selected.
 col1 <- c('red', 'blue','green')
 col2 <- c('red', 'blue')
 col3 <- c(0:2)[factor(names(slct3))]

@@ -6,14 +6,16 @@
 \alias{subd}
 \title{The utility for handling data.frame}
 \usage{
-td(dat, nm, fctr_dat)
+td(dat, nm, rn, fctr_dat)
 
 subd(dat, idlist, idx, mrgn)
 }
 \arguments{
-\item{dat}{data.frame}
+\item{dat}{data.frame:}
 
-\item{nm}{character}
+\item{nm}{character: [default: NULL]}
+
+\item{rn}{logical: [default: FALSE]}
 
 \item{fctr_dat}{data.frame or vector}
 
@@ -28,16 +30,25 @@ The utility for handling data.frame
 }
 \examples{
 \dontrun{
+
+# Create a transposed data.frame with names
+td(iris[-5], nm = rownames(iris), rn = T)
+
 # Create a transposed data.frame with names and columns of factor
+vdat <- rsko::splt_dat(names(iris[-5]), "\\\\.", c("organ","where"))
+td(iris[-5], nm = rownames(iris), )
+
 dat <- rskodat::fpkm
-nm <- rownames(dat)
 fctr_dat <- rsko::splt_dat(names(dat), "_", c("cnd","time","rep"))
-tdat <- td(dat, nm, fctr_dat)
-tdat[1:6]
+tdat <- td(dat, rownames(dat), fctr_dat); tdat[1:6]
 
 # Subset with a list for index column
-slst <- list(toyota = c("Toyota Corolla", "Toyota Corona"),
+sub_idx1 <- list(toyota = c("Toyota Corolla", "Toyota Corona"),
     mazda = c("Mazda RX4", "Mazda RX4 Wag"))
-subd(mtcars, slst, rownames(mtcars), 1)
+subd(mtcars, sub_idx1, rownames(mtcars), 1)
+
+sub_idx2 <- list(c("mpg", "disp"), c("vs","gear"))
+subd(mtcars, sub_idx2, names(mtcars), 2)
+
 }
 }

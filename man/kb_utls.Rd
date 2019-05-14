@@ -23,8 +23,13 @@ utility for kableExtra
 # default parameter
 kb_utls(head(iris))
 
+# additional options of 'kable' and 'kable_styling'
+kb_utls(head(iris), list(caption = 'iris', align = 'c'),
+    list(bootstrap_options = 'hover'))
+
 # no use kable_styling
-kb_utls(head(iris), kb_opt = list(format = "pandoc", caption = "iris"), NULL)
+kb_utls(head(iris), list(format = "pandoc", caption = "iris"), NULL)
+
 }
 
 }
