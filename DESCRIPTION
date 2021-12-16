@@ -1,6 +1,6 @@
 Package: rsko
 Type: Package
-Title: This is my personal package of R functions for Bioinformatics
+Title: This is my personal package of R functions
 Version: 0.1.0
 Author: Shogo Konishi <shkonishi@gmail.com>
 Maintainer: Shogo Konishi <shkonishi@gmail.com>
