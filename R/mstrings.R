@@ -169,6 +169,10 @@ mmatch_sub <- function(pat, x, y, missing = NA){
   # the list of positions value matching
   pos <- rsko::mmatch(pat, x, na.rm = T)
 
+  # replace elements and positions
+  y <- y[!is.na(pos)]
+  pos <- pos[!is.na(pos)]
+
   # convert all elements of 'x' to corresponding values
   new_x <- x
   invisible(lapply(seq_along(pos), function(i) new_x[pos[[i]]] <<- y[i] ))
