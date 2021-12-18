@@ -167,7 +167,7 @@ mmatch_sub <- function(pat, x, y, missing = NA){
   x <- ifelse(x %in% pat, x, missing)
 
   # the list of positions value matching
-  pos <- rsko::mmatch(pat, x, na.rm = T)
+  pos <- rsko::mmatch(pat, x, na.rm = F)
 
   # replace elements and positions
   y <- y[!is.na(pos)]
