@@ -52,8 +52,7 @@ pubmed_search <- function(search_str, years, outfmt = "tab") {
     eusum <- RISmed::EUtilsSummary(query = search_str, mindate = min(years), maxdate = max(years),
                                    type = "esearch", db = "pubmed")
     res_records <- RISmed::EUtilsGet(eusum)
-    dat <- dplyr::bind_rows(list(Title = RISmed::Title(res_records),
-                                 ArticleTitle = RISmed::ArticleTitle(res_records),
+    dat <- dplyr::bind_rows(list(ArticleTitle = RISmed::ArticleTitle(res_records),
                                  Year = RISmed::YearPubmed(res_records),
                                  PMID = RISmed::PMID(res_records),
                                  Journal = RISmed::MedlineTA(res_records),
