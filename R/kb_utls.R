@@ -1,6 +1,5 @@
 #' utility for kableExtra
 #' @name kb_utls
-#' @rdname kb_utls
 #'
 #' @title utility for kableExtra
 #'
@@ -25,7 +24,6 @@
 #'
 #' }
 #'
-#' @rdname kb_utls
 #' @export
 kb_utls <- function(x, kb_opt = list(format = 'html', align = 'c', row.names = F),
                    ext_opt = list(bootstrap_options = 'striped', full_width = F, position = 'left')){

@@ -1,10 +1,11 @@
 #' Fetch KEGG data usig KEGG API
-#' @name fetch_kegg
-#' @rdname fetch_kegg
 #'
 #' @title Fetch KEGG data usig KEGG API
+#'
 #' @description Fetch KEGG data usig KEGG API, for the purpose of finding out association with
 #'     transcriptome and metabolome experimental data.
+#'
+#' @name fetch_kegg
 #'
 #' @usage fetch_kegg_gene(org, outfmt, out_fst)
 #' @usage fetch_kegg_react(outfmt)
@@ -285,7 +286,6 @@ fetch_kegg_gene <- function(org, outfmt, out_fst = NULL){
     }
   }
 }
-
 
 
 #' @rdname fetch_kegg

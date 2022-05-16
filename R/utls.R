@@ -1,6 +1,5 @@
 #' My R utility functions.
 #' @name utls
-#' @rdname utls
 #'
 #' @title My R utility functions.
 #'
