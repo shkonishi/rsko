@@ -7,18 +7,18 @@
 \alias{prcfqbox}
 \title{Process fastq file}
 \usage{
-prcfqs(filepath, n)
+prcfqs(file, n)
 
-prcfqlen(filepath)
+prcfqlen(file)
 
-prcfqbox(filepath, n, ...)
+prcfqbox(file, n, ...)
 
-prcfqlen(filepath)
+prcfqlen(file)
 
-prcfqbox(filepath, n, ...)
+prcfqbox(file, n, ...)
 }
 \arguments{
-\item{filepath}{character}
+\item{file}{character}
 
 \item{n}{Size of sampling [default: 10000]}
 
@@ -32,6 +32,7 @@ Process fastq file and create a data.frame of quality score
 }
 \examples{
 \dontrun{
+#
  in_f <- "test.fastq.bz2"
  res <- prcfqs(in_f)
 

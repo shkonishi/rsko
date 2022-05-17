@@ -3,11 +3,11 @@
 #' Process fastq file and create a data.frame of quality score
 #'
 #' @name prcfq
-#' @usage prcfqs(filepath, n)
-#' @usage prcfqlen(filepath)
-#' @usage prcfqbox(filepath, n, ...)
+#' @usage prcfqs(file, n)
+#' @usage prcfqlen(file)
+#' @usage prcfqbox(file, n, ...)
 #'
-#' @param filepath character
+#' @param file character
 #' @param n Size of sampling [default: 10000]
 #'
 #' @param ... additional plot options [required for `prcfqbox`]
@@ -15,6 +15,7 @@
 #' @return data frame / integer vector
 #'
 #' @examples \dontrun{
+#' #
 #'  in_f <- "test.fastq.bz2"
 #'  res <- prcfqs(in_f)
 #'
@@ -22,7 +23,8 @@
 #' }
 #'
 #' @rdname prcfq
-prcfqs <- function(filepath, n){
+#' @export
+prcfqs <- function(file, n){
 
   # FUN1: Check file type
   ft <- function(path){
@@ -79,15 +81,15 @@ prcfqs <- function(filepath, n){
 
   ### MAIN ###
   # create file connection, and get line number
-  if (ft(filepath) == "gzfile") {
-    con = gzfile(description = filepath, open = "r")
-    nfq <- as.integer(system(paste("gunzip -c", filepath, "| wc -l"), intern = T))/4
-  } else if (ft(filepath) == "bzfile") {
-    con = bzfile(description = filepath, open = "r")
-    nfq <- as.integer(system(paste("bunzip2 -c", filepath, "| wc -l"), intern = T))/4
+  if (ft(file) == "gzfile") {
+    con = gzfile(description = file, open = "r")
+    nfq <- as.integer(system(paste("gunzip -c", file, "| wc -l"), intern = T))/4
+  } else if (ft(file) == "bzfile") {
+    con = bzfile(description = file, open = "r")
+    nfq <- as.integer(system(paste("bunzip2 -c", file, "| wc -l"), intern = T))/4
   } else {
-    con = file(description = filepath, open = "r")
-    nfq <- as.integer(system(paste("cat", filepath, "| wc -l"), intern = T))/4
+    con = file(description = file, open = "r")
+    nfq <- as.integer(system(paste("cat", file, "| wc -l"), intern = T))/4
   }
 
   # Extract quality value from a connection of fastq
@@ -121,7 +123,8 @@ prcfqs <- function(filepath, n){
 }
 
 #' @rdname prcfq
-prcfqlen <- function(filepath){
+#' @export
+prcfqlen <- function(file){
   # FUN1: Check file type
   ft <- function(path){
     f = file(path)
@@ -131,15 +134,15 @@ prcfqlen <- function(filepath){
   }
 
   # create file connection
-  if (ft(filepath) == "gzfile") {
-    con = gzfile(description = filepath, open = "r")
-    nfq <- as.integer(system(paste("gunzip -c", filepath, "| wc -l"), intern = T))/4
-  } else if (ft(filepath) == "bzfile") {
-    con = bzfile(description = filepath, open = "r")
-    nfq <- as.integer(system(paste("bunzip2 -c", filepath, "| wc -l"), intern = T))/4
+  if (ft(file) == "gzfile") {
+    con = gzfile(description = file, open = "r")
+    nfq <- as.integer(system(paste("gunzip -c", file, "| wc -l"), intern = T))/4
+  } else if (ft(file) == "bzfile") {
+    con = bzfile(description = file, open = "r")
+    nfq <- as.integer(system(paste("bunzip2 -c", file, "| wc -l"), intern = T))/4
   } else {
-    con = file(description = filepath, open = "r")
-    nfq <- as.integer(system(paste("cat", filepath, "| wc -l"), intern = T))/4
+    con = file(description = file, open = "r")
+    nfq <- as.integer(system(paste("cat", file, "| wc -l"), intern = T))/4
   }
 
   # Extract quality value from a connection of fastq
@@ -160,8 +163,9 @@ prcfqlen <- function(filepath){
 }
 
 #' @rdname prcfq
-prcfqbox <- function(filepath, n, ...){
-  res <- prcfqs(filepath, n)
+#' @export
+prcfqbox <- function(file, n, ...){
+  res <- prcfqs(file, n)
 
   graphics::boxplot(res, outline = F,
           xaxt="n", ylim = c(0, 40),
