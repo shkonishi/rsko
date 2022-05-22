@@ -5,6 +5,8 @@
 \alias{prcfqs}
 \alias{prcfqlen}
 \alias{prcfqbox}
+\alias{prcfq2box}
+\alias{prcfq2den}
 \title{Process fastq file}
 \usage{
 prcfqs(file, n)
@@ -13,19 +15,31 @@ prcfqlen(file)
 
 prcfqbox(file, n, ...)
 
+prcfq2box(file1, file2, n, col2, ...)
+
+prcfq2den(file1, file2, col2, lab)
+
 prcfqlen(file)
 
 prcfqbox(file, n, ...)
+
+prcfq2box(file1, file2, n, col2, ...)
+
+prcfq2den(file1, file2, col2, lab)
 }
 \arguments{
-\item{file}{character}
+\item{file}{<CHAR> input file path}
 
-\item{n}{Size of sampling [default: 10000]}
+\item{n}{<INT> Size of sampling [default: 10000]　
+　If a negative value is selected, all reads are used.}
 
-\item{...}{additional plot options [required for `prcfqbox`]}
-}
-\value{
-data frame / integer vector
+\item{...}{additional plot options [required for `boxplot` ]}
+
+\item{file1, file2}{<CHAR> input file path}
+
+\item{col2}{<CHAR>|<NUM> character or numeric (vector), the border color of the boxplot.}
+
+\item{lab}{<CHAR>}
 }
 \description{
 Process fastq file and create a data.frame of quality score
@@ -33,9 +47,14 @@ Process fastq file and create a data.frame of quality score
 \examples{
 \dontrun{
 #
- in_f <- "test.fastq.bz2"
- res <- prcfqs(in_f)
+ in_f1 <- "test_R1.fq.bz2"
+ in_f2 <- "test_R2.fq.bz2"
+ res <- prcfqs(in_f1)
+ cols <- adjustcolor(c(1,2), 0.5)
 
+ prcfqbox(file = in_f1, n = 10000)
+ prcfq2box(file1 = in_f1, file2 = in_f2, n = 10000, col2 = cols)
+ prcfq2den(file1 = in_f1, file2 = in_f2, col2 = cols)
 
 }
 

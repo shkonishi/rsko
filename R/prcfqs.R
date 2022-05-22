@@ -6,19 +6,29 @@
 #' @usage prcfqs(file, n)
 #' @usage prcfqlen(file)
 #' @usage prcfqbox(file, n, ...)
+#' @usage prcfq2box(file1, file2, n, col2, ...)
+#' @usage prcfq2den(file1, file2, col2, lab)
 #'
-#' @param file character
-#' @param n Size of sampling [default: 10000]
+#' @param file <CHAR> input file path
+#' @param file1,file2 <CHAR> input file path
+#' @param n <INT> Size of sampling [default: 10000]　
+#' 　If a negative value is selected, all reads are used.
+#' @param ... additional plot options [required for `boxplot` ]
+#' @param col2 <CHAR>|<NUM> character or numeric (vector), the border color of the boxplot.
 #'
-#' @param ... additional plot options [required for `prcfqbox`]
+#' @param lab <CHAR>
 #'
-#' @return data frame / integer vector
 #'
 #' @examples \dontrun{
 #' #
-#'  in_f <- "test.fastq.bz2"
-#'  res <- prcfqs(in_f)
+#'  in_f1 <- "test_R1.fq.bz2"
+#'  in_f2 <- "test_R2.fq.bz2"
+#'  res <- prcfqs(in_f1)
+#'  cols <- adjustcolor(c(1,2), 0.5)
 #'
+#'  prcfqbox(file = in_f1, n = 10000)
+#'  prcfq2box(file1 = in_f1, file2 = in_f2, n = 10000, col2 = cols)
+#'  prcfq2den(file1 = in_f1, file2 = in_f2, col2 = cols)
 #'
 #' }
 #'
@@ -94,31 +104,44 @@ prcfqs <- function(file, n){
 
   # Extract quality value from a connection of fastq
   i <- 1; j <- 1
-  si <- sort(sample(1:nfq, n))
-  qs <- vector("list", length = n)
+  if (n <= 0) {
+    qs <- vector("list", length = n)
+    while ( TRUE ) {
+      # Read line
+      line = readLines(con, n = 4)
 
-  while ( TRUE ) {
-    # Read line
-    line = readLines(con, n = 4)
+      # Breake at the end of file
+      if ( length(line) == 0 ) break
 
-    # Breake at the end of file
-    if ( length(line) == 0 ) {
-      break
-    }
-
-    # Sampling line
-    if ( i == si[j] && j <= n) {
+      # Extract data from a sampling line
       qv <- unlist(strsplit(line[4], ""))
       qs[[j]] <- as.numeric(sub_fqs(x = qv))
-      j <- j + 1
-    } else if (is.na(si[j])) {
-      break
+      i <- i + 1
     }
 
-    i <- i + 1
+  } else if (n > 0) {
+    si <- sort(sample(1:nfq, n))
+    qs <- vector("list", length = n)
+    while ( TRUE ) {
+      # Read line
+      line = readLines(con, n = 4)
+
+      # Break at the list element is filled.
+      if ( !is.null(qs[[n]]) )  break
+
+      # Extract data from a sampling line
+      if ( i == si[j] && j <= n) {
+        qv <- unlist(strsplit(line[4], ""))
+        qs[[j]] <- as.numeric(sub_fqs(x = qv))
+        j <- j + 1
+      } else if (is.na(si[j])) {
+        break
+      }
+
+      i <- i + 1
+    }
   }
   close(con)
-
   return(data.frame(t(bindfill(qs))))
 }
 
@@ -148,6 +171,8 @@ prcfqlen <- function(file){
   # Extract quality value from a connection of fastq
   i <- 1
   rlen <- vector("integer", length = nfq)
+
+
   while ( TRUE ) {
     line = readLines(con, n = 4)
 
@@ -175,6 +200,48 @@ prcfqbox <- function(file, n, ...){
 
 }
 
+#' @rdname prcfq
+#' @export
+prcfq2box <- function(file1, file2, n, col2, ...){
+  res1 <- prcfqs(file1, n = n)
+  res2 <- prcfqs(file2, n = n)
+  mcycl <- max(ncol(res1), ncol(res2))
 
+  graphics::boxplot(res1, outline = F, col = NULL, border = col2[1],
+                    xaxt="n", xlim = c(0, mcycl), ylim = c(0, 40),
+                    xlab = "Cycle", ylab = "Quality Score", ...)
+  graphics::par(new = T)
+  graphics::boxplot(res2, outline = F, col = NULL, border = col2[2],
+                    xaxt="n", xlim = c(0, mcycl), ylim = c(0, 40),
+                    xlab = "Cycle", ylab = "Quality Score", ...)
 
+  graphics::abline(h=c(30,10), col = "gray60", lty = 3)
+  graphics::axis(1, seq(0, mcycl, 10))
+
+}
+
+#' @rdname prcfq
+#' @export
+prcfq2den <- function(file1, file2, col2, lab){
+  x <- prcfqlen(file1)
+  y <- prcfqlen(file2)
+
+  key <- value <- count <- NULL
+
+  dat <- data.frame(
+    key = factor(rep(lab, c(length(x), length(y)))),
+    value =c(x, y))
+
+  col2 <- ggplot2::alpha(col2, 0.4)
+
+  resgg <-
+    ggplot2::ggplot(dat, ggplot2::aes(x = value, y = ggplot2::stat(count),
+                                      fill = key, color = key)) +
+    ggplot2::geom_density(alpha = 0.5) +
+    ggplot2::theme_bw() +
+    ggplot2::scale_colour_manual(values = col2) +
+    ggplot2::scale_fill_manual(values = col2) +
+    ggplot2::labs(fill = "", color ="")
+  return(resgg)
+}
 
