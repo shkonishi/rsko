@@ -235,9 +235,8 @@ prcfq2den <- function(file1, file2, col2, lab){
   col2 <- ggplot2::alpha(col2, 0.4)
 
   resgg <-
-    ggplot2::ggplot(dat, ggplot2::aes(x = value, y = ggplot2::stat(count),
-                                      fill = key, color = key)) +
-    ggplot2::geom_density(alpha = 0.5) +
+    ggplot2::ggplot(dat, ggplot2::aes(x = value, y = ggplot2::after_stat(count), fill = key, color = key)) +
+    ggplot2::geom_density(bw = 0.3, alpha = 0.5) +
     ggplot2::theme_bw() +
     ggplot2::scale_colour_manual(values = col2) +
     ggplot2::scale_fill_manual(values = col2) +
