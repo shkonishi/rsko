@@ -5,7 +5,7 @@
 #'   \href{https://www.ncbi.nlm.nih.gov/books/NBK269313/}{Literature Search Methods}
 #' @param years integer vector: E.g. 1980:2017
 #' @param outfmt character: "tab" is a table of results ,or "cnt" is a count of hits per years. The default value is "tab".
-#' @return dataframe
+#' @return dataframe or EUtilsSummary object
 #' @examples ## pubmed table
 #' \dontrun{
 #' str1 <- "microarray[tiab]"
@@ -59,9 +59,17 @@ pubmed_search <- function(search_str, years, outfmt = "tab") {
                                  Authors = RISmed::Author(res_records),
                                  Abstract = RISmed::AbstractText(res_records)))
     # fst_auth <- sapply(Authors, function(x)paste(x[1,1:2], collapse = ' '))
+    return(dat)
+
+  } else if (outfmt == "eusum"){
+    eusum <- RISmed::EUtilsSummary(query = search_str,
+                                   mindate = min(years),
+                                   maxdate = max(years),
+                                   type = "esearch",
+                                   sdb = "pubmed")
+    return(eusum)
 
   }
-  return(dat)
 
 }
 

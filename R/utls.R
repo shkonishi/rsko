@@ -7,9 +7,9 @@
 #' @usage ul(x)
 #' @usage dup(x)
 #' @usage char_sort(x)
+#' @usage char_fct(x)
 #' @usage str_tail(x, n)
 #' @usage str_head(x, n)
-#' @usage fct_char(x)
 #'
 #' @param x atomic
 #' @param n integer
@@ -29,7 +29,7 @@
 #' char_sort(v3)
 #'
 #' # create factor with levels by numerical order
-#' fct_char(v3)
+#' char_fct(v3)
 #'
 #' # head and tail for strings
 #' v4 <- sapply(1:3, function(i) paste(sample(c("A","T","G","C"), 10, TRUE), collapse = ""))
@@ -56,7 +56,7 @@ char_sort <- function(x){
 
 #' @rdname utls
 #' @export
-fct_char <- function(x){
+char_fct <- function(x){
   lv <- unique(x[order(nchar(x), x)])
   factor(x, levels = lv)
 }

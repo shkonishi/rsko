@@ -15,7 +15,7 @@ pubmed_search(search_str, years, outfmt)
 \item{outfmt}{character: "tab" is a table of results ,or "cnt" is a count of hits per years. The default value is "tab".}
 }
 \value{
-dataframe
+dataframe or EUtilsSummary object
 }
 \description{
 This functions returns dataframe, several .

@@ -23,6 +23,8 @@
 #'
 #' # Create a transposed data.frame with names
 #' td(iris[-5], nm = rownames(iris), rn = T)
+#' td(iris[-5], nm = paste0(substr(iris$Species,1,3), rownames(iris)), rn = T)[1:3,1:3]
+#' td(iris[-5], nm = paste0(substr(iris$Species,1,3), rownames(iris)), rn = F)[1:3,1:3]
 #'
 #' # Create a transposed data.frame with names and columns of factor
 #' vdat <- rsko::splt_dat(names(iris[-5]), "\\.", c("organ","where"))
