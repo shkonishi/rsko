@@ -5,7 +5,7 @@
 \alias{ul}
 \alias{dup}
 \alias{char_sort}
-\alias{fct_char}
+\alias{char_fct}
 \alias{str_tail}
 \alias{str_head}
 \title{My R utility functions.}
@@ -16,17 +16,17 @@ dup(x)
 
 char_sort(x)
 
+char_fct(x)
+
 str_tail(x, n)
 
 str_head(x, n)
-
-fct_char(x)
 
 dup(x)
 
 char_sort(x)
 
-fct_char(x)
+char_fct(x)
 
 str_tail(x, n)
 
@@ -56,7 +56,7 @@ v3 <- sort(paste0("V", as.character(1:13)))
 char_sort(v3)
 
 # create factor with levels by numerical order
-fct_char(v3)
+char_fct(v3)
 
 # head and tail for strings
 v4 <- sapply(1:3, function(i) paste(sample(c("A","T","G","C"), 10, TRUE), collapse = ""))
