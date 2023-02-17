@@ -3,7 +3,6 @@
 #' The utility for handling data.frame
 #'
 #' @name df_utls
-#' @rdname df_utls
 #'
 #' @usage td(dat, nm, rn, fctr_dat)
 #' @usage subd(dat, idlist, idx, mrgn)
@@ -43,8 +42,8 @@
 #' subd(mtcars, sub_idx2, names(mtcars), 2)
 #'
 #' }
+#'
 #' @rdname df_utls
-#' @export
 td <- function(dat, nm = NULL, rn = FALSE, fctr_dat=NULL){
   # names of 'dat' set as a column of transposed data.frame
   lab <- names(dat)
@@ -74,7 +73,6 @@ td <- function(dat, nm = NULL, rn = FALSE, fctr_dat=NULL){
 }
 
 #' @rdname df_utls
-#' @export
 subd <- function(dat, idlist, idx, mrgn ){
   # argument check
   if (mrgn == 1 & nrow(dat) != length(idx)) {

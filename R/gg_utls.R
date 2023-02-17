@@ -1,6 +1,5 @@
 #' My utility functions for handling ggplot objects.
 #' @name gg_utls
-#' @rdname gg_utls
 #'
 #' @title My utility functions for handling ggplot objects.
 #'

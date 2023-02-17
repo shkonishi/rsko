@@ -55,4 +55,5 @@ sub_idx2 <- list(c("mpg", "disp"), c("vs","gear"))
 subd(mtcars, sub_idx2, names(mtcars), 2)
 
 }
+
 }

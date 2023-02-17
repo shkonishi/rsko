@@ -1,6 +1,5 @@
 #' Multiple patterns or values matching
 #' @name mstrings
-#' @rdname mstrings
 #'
 #' @title Multiple patterns or values matching
 #'
